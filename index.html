@@ -15,6 +15,8 @@
 
         body {
             font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+            max-width: 1024px;
+            margin: 0 auto;
         }
 
         .top {
@@ -27,7 +29,6 @@
         }
 
         .top>.header-container {
-            /* background-color: red; */
             position: absolute;
             top: 50%;
             width: 100%;
@@ -50,8 +51,6 @@
         }
 
         .apps-container>ul {
-            /* background-color: #f9f9f9; */
-            /* border-radius: 10px; */
             margin-top: 10px;
         }
 
@@ -253,15 +252,6 @@
                 }
             },
             methods: {
-                test() {
-                    const app = this.appList[this.selectedApp]
-                    const env = this.envList[this.selectedEnv]
-                
-                    // itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/MobileGameAccelerator-v2.2.2-Debug.plist
-                    // itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/MobileAcceleratorOversea-v2.2.2-Debug.plist
-                    // itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/QYNewOnlineTreasureIOS-v2.2.2-Debug.plist
-                    console.log(app.name, app.code, env.name, env.code, this.version);
-                }
             },
             computed: {
                 buttonTitle() {
@@ -273,10 +263,6 @@
                 downLink() {
                     const app = this.appList[this.selectedApp]
                     const env = this.envList[this.selectedEnv]
-                    /*
-                        itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/QYNewOnlineTreasureIOS-v2.9.3-Debug.plist
-                        itms-services:///action=download-manifest&url=https:/appdownload.qiyou.cn/QYNewOnlineTreasureIOS-v2.9.3-Debug.plist
-                    */
                     return `itms-services://?action=download-manifest&url=https://appdownload.qiyou.cn/${app.code}-v${this.version}-${env.code}.plist`
                 }
             }
