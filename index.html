@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+        }
+
+        .top {
+            background-image: url('./src/top.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+        }
+
+        .top>.header-container {
+            /* background-color: red; */
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+        }
+
+        .top>.header-container>h2 {
+            color: white;
+            text-align: center;
+            font-size: 30px;
+            width: 100%;
+        }
+
+        .content {
+            margin: 20px;
+        }
+
+        .list-title {
+            font-size: 20px;
+        }
+
+        .apps-container>ul {
+            /* background-color: #f9f9f9; */
+            /* border-radius: 10px; */
+            margin-top: 10px;
+        }
+
+        .apps-container>ul>li {
+            height: 60px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border-bottom: solid 1px #efefef;
+        }
+
+        .apps-container>ul>li>label {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            flex: 1;
+        }
+
+        .apps-container>ul>li img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-left: 8px;
+            border: 1px solid #efefef;
+        }
+
+        .apps-container>ul>li p {
+            margin-left: 8px;
+            font-size: 16px;
+            color: #212127;
+        }
+
+        .env-container>.list-title {
+            margin-top: 20px;
+        }
+
+        .env-container>ul {
+            margin-top: 10px;
+        }
+
+        .env-container>ul>li {
+            list-style: none;
+            height: 50px;
+            line-height: 50px;
+            border-bottom: 1px solid #efefef;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+        }
+        .env-container label {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            flex: 1;
+        }
+        .env-container label>span {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: white;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+
+        .version-container>.list-title {
+            margin-top: 20px;
+        }
+
+        .version-container>.version-input {
+            margin-top: 10px;
+            border-radius: 12px;
+            height: 40px;
+            border: 1px solid #cfcfcf;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+
+        .download-btn {
+            display: block;
+            /* width: 100%; */
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            margin-top: 20px;
+            background-color: #409EFF;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        footer>p {
+            text-align: center;
+            background-color: rgba(12, 18, 43, 0.5);
+            height: 50px;
+            color: white;
+            line-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="top">
+            <div class="header-container">
+                <h2>奇游iOS测试应用下载</h2>
+            </div>
+        </div>
+        <div class="content">
+            <div class="apps-container">
+                <h4 class="list-title">应用列表</h4>
+                <ul>
+                    <li v-for="(item, index) in appList" :key="index">
+                        <input type="radio" name="selecteApp" :id="item.label" :value="index" v-model="selectedApp"/>
+                        <label :for="item.label">
+                            <img :src="item.icon">
+                            <p>{{ item.name }}</p>
+                        </label>
+
+                    </li>
+                </ul>
+            </div>
+            <div class="env-container">
+                <h4 class="list-title">构建环境</h4>
+                <ul>
+                    <li v-for="(item, index) in envList" :key="index">
+                        <input type="radio" :id="item.label" :value="index" v-model="selectedEnv">
+                        <label :for="item.label">
+                            <span :style="{'background-color':item.backColor}">{{ item.icon }}</span>
+                            <p>{{ `${item.name}(${item.code})` }}</p>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="version-container">
+
+                <h4 class="list-title">版本选择</h4>
+                <input class="version-input" type="text" placeholder="版本号如：1.0.0" v-model="version">
+            </div>
+            <a :href="downLink" class="download-btn">{{ buttonTitle }}</a>
+        </div>
+        <footer>
+            <p>Powered by Fox</p>
+        </footer>
+    </div>
+
+    <script>
+        const config = {
+            data() {
+                return {
+                    appList: [
+                        {
+                            name: "手游加速器",
+                            icon: "./src/qyicon1.png",
+                            label: "a1",
+                            code: "MobileGameAccelerator"
+                        },
+                        {
+                            name: "联机宝",
+                            icon: "./src/qyicon2.png",
+                            label: "a2",
+                            code: "QYNewOnlineTreasureIOS"
+                        },
+                        {
+                            name: "六毫秒",
+                            icon: "./src/qyicon3.png",
+                            label: "a3",
+                            code: "MobileAcceleratorOversea"
+                        }
+                    ],
+                    envList: [
+                        {
+                            name: "测试",
+                            code: "Debug",
+                            label: "e1",
+                            icon: "D",
+                            backColor: '#3c3c3c',
+                        },
+                        {
+                            name: "镜像",
+                            code: "PreRelease",
+                            label: "e2",
+                            icon: "P",
+                            backColor: '#409EFF',
+                        },
+                        {
+                            name: "正式",
+                            code: "Release",
+                            label: "e3",
+                            icon: "R",
+                            backColor: 'green',
+                        },
+                    ],
+                    version: "",
+                    selectedApp: 0,
+                    selectedEnv: 0,
+                }
+            },
+            methods: {
+                test() {
+                    const app = this.appList[this.selectedApp]
+                    const env = this.envList[this.selectedEnv]
+                
+                    // itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/MobileGameAccelerator-v2.2.2-Debug.plist
+                    // itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/MobileAcceleratorOversea-v2.2.2-Debug.plist
+                    // itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/QYNewOnlineTreasureIOS-v2.2.2-Debug.plist
+                    console.log(app.name, app.code, env.name, env.code, this.version);
+                }
+            },
+            computed: {
+                buttonTitle() {
+                    const app = this.appList[this.selectedApp]
+                    const env = this.envList[this.selectedEnv]
+
+                    return `下载${app.name}-${env.name}-v${this.version}`
+                },
+                downLink() {
+                    const app = this.appList[this.selectedApp]
+                    const env = this.envList[this.selectedEnv]
+                    /*
+                        itms-services:///action=download-manifest&url=https://appdownload.qiyou.cn/QYNewOnlineTreasureIOS-v2.9.3-Debug.plist
+                        itms-services:///action=download-manifest&url=https:/appdownload.qiyou.cn/QYNewOnlineTreasureIOS-v2.9.3-Debug.plist
+                    */
+                    return `itms-services://?action=download-manifest&url=https://appdownload.qiyou.cn/${app.code}-v${this.version}-${env.code}.plist`
+                }
+            }
+        }
+        Vue.createApp(config).mount('#app')
+    </script>
+</body>
+
+</html>
