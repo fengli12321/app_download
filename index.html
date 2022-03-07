@@ -143,6 +143,10 @@
             border-radius: 20px;
             text-decoration: none;
         }
+        .download-btn.disable {
+            background-color: #cdcdcd;
+            pointer-events: none;
+        }
 
         footer>p {
             text-align: center;
@@ -192,7 +196,7 @@
                 <h4 class="list-title">版本选择</h4>
                 <input class="version-input" type="text" placeholder="版本号如：1.0.0" v-model="version">
             </div>
-            <a :href="downLink" class="download-btn">{{ buttonTitle }}</a>
+            <a :href="downLink" class="download-btn" :class="version.length > 0 ? '' : 'disable'">{{ buttonTitle }}</a>
         </div>
         <footer>
             <p>Powered by Fox</p>
