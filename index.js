@@ -25,6 +25,12 @@ const config = {
                     icon: "./src/qyicon4.png",
                     label: "a4",
                     code: "QYIOSLagoApp"
+                },
+                {
+                    name: "海豚加速器",
+                    icon: "./src/qyicon5.png",
+                    label: "a5",
+                    code: "HTMoblieGameAccelerator"
                 }
             ],
             envList: [
